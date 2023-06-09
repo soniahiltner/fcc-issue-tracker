@@ -61,7 +61,7 @@ suite("Functional Tests", function () {
       .send(issue)
       .end((err, res) => {
         assert.equal(res.status, 200);
-        assert.equal(res.text, '{"error":"required field(s) missing"}');
+        assert.equal(res.body.error, "required field(s) missing");
         done();
       });
   });

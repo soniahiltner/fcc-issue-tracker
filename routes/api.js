@@ -16,9 +16,10 @@ module.exports = function (app) {
       let project = req.params.project;
       let query = req.query;
 
-      const Project = mongoose.model(project, projectSchema);
+      const Project = mongoose.model(`${project}`, projectSchema);
       try {
         const issues = await Project.find(query).select("-__v");
+        console.log(issues)
         res.json(issues);
       } catch (error) {
         console.log(error);
@@ -28,17 +29,18 @@ module.exports = function (app) {
     .post(async function (req, res) {
       let project = req.params.project;
 
-      const Project = mongoose.model(project, projectSchema);
+      const Project = mongoose.model(`${project}`, projectSchema);
       try {
         const newIssue = new Project(req.body)
         await newIssue.save()
         const issue = await Project.findById({ _id: newIssue._id }).select(
           "-__v"
         );
+        console.log(issue)
         res.json(issue);
       } catch (err) {
         console.log(err);
-        res.send({ error: "required field(s) missing" });
+        res.json({ error: "required field(s) missing" });
       }
     })
 
